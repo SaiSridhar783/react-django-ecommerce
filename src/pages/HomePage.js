@@ -1,28 +1,35 @@
 import { Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
-//import products from "../utils/products";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
-import axiosInstance from "../utils/axios-instance";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { productActions } from "../store";
 
 const HomePage = () => {
-  const [products, setProducts] = useState([]);
+  const { products, error } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    axiosInstance.get("/api/products/").then(({ data }) => {
-      setProducts(data);
-    });
-  }, []);
+    dispatch(productActions.fetchProducts());
+  }, [dispatch]);
 
   return (
     <div>
       <h1>Latest Products</h1>
       <Row>
-        {products.map((product, idx) => (
-          <Col sm={12} md={6} lg={4} xl={3} key={idx}>
-            <Product product={product} />
-          </Col>
-        ))}
+        {error ? (
+          <Message variant="danger">{error.message}</Message>
+        ) : products.length > 0 ? (
+          products.map((product, idx) => (
+            <Col sm={12} md={6} lg={4} xl={3} key={idx}>
+              <Product product={product} />
+            </Col>
+          ))
+        ) : (
+          <Loader />
+        )}
       </Row>
     </div>
   );
