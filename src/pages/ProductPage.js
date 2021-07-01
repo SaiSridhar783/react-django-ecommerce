@@ -1,11 +1,19 @@
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
-import products from "../utils/products";
+// import products from "../utils/products";
+import axiosInstance from "../utils/axios-instance";
+import { useEffect, useState } from "react";
 
 const ProductPage = (props) => {
   const params = useParams();
-  const product = products.find((p) => p._id === params.id);
+  const [product, setProduct] = useState([]);
+  //const product = products.find((p) => p._id === params.id);
+  useEffect(() => {
+    axiosInstance.get("/api/product/" + params.id).then(({ data }) => {
+      setProduct(data);
+    });
+  }, [params.id]);
 
   return (
     <div>
@@ -58,11 +66,15 @@ const ProductPage = (props) => {
                 </Row>
               </ListGroup.Item>
 
-              <ListGroup.Item className="text-center">
+              <ListGroup.Item
+                className={`text-center ${
+                  product.countInStock <= 0 ? "cursor-not" : null
+                }`}
+              >
                 <Button
-                  className="btn-block"
                   type="button"
                   disabled={product.countInStock > 0 ? false : true}
+                  className="btn-block"
                 >
                   Add To Cart
                 </Button>
