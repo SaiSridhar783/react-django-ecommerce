@@ -13,14 +13,22 @@ const addToCart = createAsyncThunk(
   }
 );
 
-const initialState = localStorage.getItem("cartItems")
+const initialCart = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { cartItems: initialState },
-  reducers: {},
+  initialState: { cartItems: initialCart },
+  reducers: {
+    removeFromCart: (state, action) => {
+      state.cartItems = state.cartItems.filter(
+        (each) => each.product !== action.payload
+      );
+
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+    },
+  },
   extraReducers: {
     [addToCart.fulfilled]: (state, action) => {
       const item = { ...action.payload, product: action.payload._id };
