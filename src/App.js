@@ -5,7 +5,10 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import CartPage from "./pages/CartPage";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 import ProductPage from "./pages/ProductPage";
+import ProfilePage from "./pages/ProfilePage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -23,6 +26,15 @@ function App() {
               </Route>
               <Route path="/cart/:id?">
                 <CartPage />
+              </Route>
+              <Route path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/register">
+                <RegisterPage />
+              </Route>
+              <Route path="/profile">
+                <ProfilePage />
               </Route>
             </Switch>
           </Container>
