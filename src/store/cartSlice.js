@@ -5,7 +5,7 @@ const addToCart = createAsyncThunk(
   "cart/addItem",
   async (payload, thunkAPI) => {
     try {
-      const response = await axiosInstance.get("/api/product/" + payload.id);
+      const response = await axiosInstance.get("/api/products/" + payload.id);
       return thunkAPI.fulfillWithValue({ ...response.data, qty: payload.qty });
     } catch (err) {
       return thunkAPI.rejectWithValue(err);

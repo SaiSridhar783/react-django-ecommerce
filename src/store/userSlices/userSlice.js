@@ -7,7 +7,7 @@ const userLogin = createAsyncThunk("user/login", async (payload, thunkAPI) => {
       username: payload.email,
       password: payload.password,
     });
-    
+
     /* if (!response.data) {
       throw new Error("Something went wrong!");
     } */
@@ -42,6 +42,9 @@ const userSlice = createSlice({
     userLogout: (state, action) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
+    },
+    userLoginState: (state, action) => {
+      state.userInfo = action.payload;
     },
   },
   extraReducers: {
