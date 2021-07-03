@@ -17,7 +17,7 @@ const fetchSingleProduct = createAsyncThunk(
   "product/fetchProduct",
   async (payload, thunkAPI) => {
     try {
-      const response = await axiosInstance.get("/api/product/" + payload);
+      const response = await axiosInstance.get("/api/products/" + payload);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -43,7 +43,7 @@ const productSlice = createSlice({
       state.error = null;
     },
     [fetchProducts.rejected]: (state, action) => {
-      state.error = action.payload;
+      state.error = action.payload.detail;
     },
     [fetchSingleProduct.pending]: (state) => {
       state.loading = true;
@@ -54,7 +54,7 @@ const productSlice = createSlice({
       state.loading = false;
     },
     [fetchSingleProduct.rejected]: (state, action) => {
-      state.error = action.payload.message;
+      state.error = action.payload;
       state.loading = false;
     },
   },
