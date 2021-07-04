@@ -8,7 +8,9 @@ const fetchProducts = createAsyncThunk(
       const response = await axiosInstance.get("/api/products/");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err?.response?.data.detail || err.message);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data.detail || err.message
+      );
     }
   }
 );
@@ -20,7 +22,9 @@ const fetchSingleProduct = createAsyncThunk(
       const response = await axiosInstance.get("/api/products/" + payload);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err?.response?.data.detail || err.message);
+      return thunkAPI.rejectWithValue(
+        err?.response?.data.detail || err.message
+      );
     }
   }
 );
@@ -41,6 +45,7 @@ const productSlice = createSlice({
     },
     [fetchSingleProduct.pending]: (state) => {
       state.loading = true;
+      state.error = null;
     },
     [fetchSingleProduct.fulfilled]: (state, action) => {
       state.product = action.payload;
@@ -48,7 +53,7 @@ const productSlice = createSlice({
       state.loading = false;
     },
     [fetchSingleProduct.rejected]: (state, action) => {
-      state.error = action.payload;
+      state.error = action.payload || "Something Went Wrong...";
       state.loading = false;
     },
   },

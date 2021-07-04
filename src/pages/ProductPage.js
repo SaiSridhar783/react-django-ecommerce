@@ -41,7 +41,7 @@ const ProductPage = (props) => {
         <Message variant="danger">{error}</Message>
       ) : loading ? (
         <Loader />
-      ) : (
+      ) : (product &&
         <Row>
           <Col md={6}>
             <Image src={product.image} alt={product.name} fluid />
