@@ -6,9 +6,12 @@ import Header from "./components/Header";
 import CartPage from "./pages/CartPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import PaymentPage from "./pages/PaymentPage";
 import ProductPage from "./pages/ProductPage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
+import ShippingPage from "./pages/ShippingPage";
+import PlaceorderPage from "./pages/PlaceorderPage";
 
 function App() {
   return (
@@ -35,6 +38,15 @@ function App() {
               </Route>
               <Route path="/profile">
                 <ProfilePage />
+              </Route>
+              <Route path="/shipping">
+                <ShippingPage />
+              </Route>
+              <Route path="/payment">
+                <PaymentPage />
+              </Route>
+              <Route path="/placeorder">
+                <PlaceorderPage />
               </Route>
             </Switch>
           </Container>
