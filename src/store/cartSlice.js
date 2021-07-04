@@ -28,6 +28,10 @@ const cartSlice = createSlice({
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
+    cartReset: (state, action) => {
+      state.cartItems = [];
+      localStorage.removeItem("cartItems");
+    },
   },
   extraReducers: {
     [addToCart.fulfilled]: (state, action) => {

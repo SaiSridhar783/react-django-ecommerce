@@ -1,16 +1,20 @@
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Row, Button, Col, Image, ListGroup, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { checkoutActions } from "../store/checkoutSlice";
 import { Link } from "react-router-dom";
+import { orderActions } from "../store/orderSlice";
 
 const PlaceorderPage = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const cart = { ...useSelector((state) => state.cart) };
   const checkout = useSelector((state) => state.checkout);
+  const newOrder = useSelector((state) => state.order);
+  const { order, error, success } = newOrder;
 
   cart.itemsPrice = cart.cartItems
     .reduce((acc, item) => acc + item.price * item.qty, 0)
@@ -24,7 +28,30 @@ const PlaceorderPage = () => {
     +cart.shippingPrice
   ).toFixed(2);
 
-  const placeOrderHandler = () => {};
+  const placeOrderHandler = () => {
+    dispatch(
+      orderActions.createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: checkout.shippingAddress,
+        paymentMethod: checkout.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        taxPrice: cart.taxPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
+
+  if (!checkout.paymentMethod) {
+    history.replace("/payment");
+  }
+
+  useEffect(() => {
+    if (success) {
+        dispatch(orderActions.createOrderReset())
+      history.push(`/order/${order._id}`);
+    }
+  }, [success, history, order]);
 
   return (
     <div>
@@ -112,6 +139,9 @@ const PlaceorderPage = () => {
                   <Col>Total: </Col>
                   <Col>${cart.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
