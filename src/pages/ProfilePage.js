@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { userActions, userDetailActions } from "../store";
+import { userDetailActions } from "../store";
 
 const ProfilePage = () => {
   const [name, setName] = useState("");

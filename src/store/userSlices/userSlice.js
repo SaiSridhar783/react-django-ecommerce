@@ -13,7 +13,7 @@ const userLogin = createAsyncThunk("user/login", async (payload, thunkAPI) => {
     } */
     return thunkAPI.fulfillWithValue(response.data);
   } catch (err) {
-    return thunkAPI.rejectWithValue(err.response.data.detail || err.message);
+    return thunkAPI.rejectWithValue(err?.response.data.detail || err.message);
   }
 });
 
@@ -26,7 +26,7 @@ const userRegister = createAsyncThunk(
       });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.detail || err.message);
+      return thunkAPI.rejectWithValue(err?.response.data.detail || err.message);
     }
   }
 );

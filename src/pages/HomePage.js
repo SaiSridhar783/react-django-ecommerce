@@ -20,7 +20,7 @@ const HomePage = () => {
       <h1>Latest Products</h1>
       <Row>
         {error ? (
-          <Message variant="danger">{error.message}</Message>
+          <Message variant="danger">{error}</Message>
         ) : products.length > 0 ? (
           products.map((product, idx) => (
             <Col sm={12} md={6} lg={4} xl={3} key={idx}>

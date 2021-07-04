@@ -12,7 +12,7 @@ const getUser = createAsyncThunk("userDetail/fetch", async (id, thunkAPI) => {
     const response = await axiosInstance.get(`/api/users/${id}/`, config);
     return thunkAPI.fulfillWithValue(response.data);
   } catch (err) {
-    return thunkAPI.rejectWithValue(err.response.data.details || err.message);
+    return thunkAPI.rejectWithValue(err?.response.data.details || err.message);
   }
 });
 
@@ -35,7 +35,7 @@ const updateUser = createAsyncThunk(
       thunkAPI.dispatch(userDetailActions.userReset())
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.details || err.message);
+      return thunkAPI.rejectWithValue(err?.response.data.details || err.message);
     }
   }
 );
