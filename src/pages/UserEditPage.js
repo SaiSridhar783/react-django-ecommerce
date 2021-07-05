@@ -5,7 +5,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../containers/FormContainer";
-import { userActions, userDetailActions } from "../store";
+import { adminUserActions, userActions, userDetailActions } from "../store";
 
 const UserEditPage = () => {
   const [name, setName] = useState("");
@@ -20,20 +20,34 @@ const UserEditPage = () => {
   const userState = useSelector((state) => state.userDetail);
   const { error, loading, user } = userState;
 
+  const userUpdate = useSelector((state) => state.userDetail.user);
+  const {
+    error: errorUpdate,
+    loading: loadingUpdate,
+    success: successUpdate,
+  } = userUpdate;
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(userActions.userRegister({ name, email, isAdmin }));
+    dispatch(
+      adminUserActions.adminUserPut({ _id: user._id, name, email, isAdmin })
+    );
   };
 
   useEffect(() => {
-    if (!user.name || user._id !== +userId) {
-      dispatch(userDetailActions.getUser(userId));
+    if (successUpdate) {
+      dispatch(adminUserActions.adminUserGetReset());
+      history.push("/admin/userlist");
     } else {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.isAdmin);
+      if (!user.name || user._id !== +userId) {
+        dispatch(userDetailActions.getUser(userId));
+      } else {
+        setName(user.name);
+        setEmail(user.email);
+        setIsAdmin(user.isAdmin);
+      }
     }
-  }, [dispatch, user, userId]);
+  }, [dispatch, user, userId, successUpdate, history]);
 
   return (
     <div>
@@ -41,6 +55,8 @@ const UserEditPage = () => {
 
       <FormContainer>
         <h1 className="mb-5">Edit User</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (

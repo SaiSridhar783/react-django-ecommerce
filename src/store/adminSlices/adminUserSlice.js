@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios-instance";
+import { userDetailActions } from "../userSlices/userDetailSlice";
 
 const adminUserGet = createAsyncThunk(
   "adminUser/get",
@@ -30,7 +31,7 @@ const adminUserDelete = createAsyncThunk(
         },
       };
       const response = await axiosInstance.delete(
-        `/api/users/delete/${id}`,
+        `/api/users/delete/${id}/`,
         config
       );
       return thunkAPI.fulfillWithValue(response.data);
@@ -42,12 +43,36 @@ const adminUserDelete = createAsyncThunk(
   }
 );
 
+const adminUserPut = createAsyncThunk(
+  "adminUser/put",
+  async (user, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.userInfo.token}`,
+        },
+      };
+      const response = await axiosInstance.put(
+        `/api/users/update/${user._id}/`,
+        user,
+        config
+      );
+      thunkAPI.dispatch(userDetailActions.getUser(user._id));
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err?.response.data.details || err.message
+      );
+    }
+  }
+);
+
 const adminUserSlice = createSlice({
   name: "adminUser",
-  initialState: { users: [], success: false },
+  initialState: { users: [], success: false, user: {} },
   reducers: {
     adminUserGetReset: (state, action) => {
-      state = { users: [] };
+      state = { users: [], user: {} };
     },
   },
   extraReducers: {
@@ -82,6 +107,21 @@ const adminUserSlice = createSlice({
       state.error = action.payload;
       state.success = false;
     },
+    [adminUserPut.pending]: (state, action) => {
+      state.user.loading = true;
+      state.user.error = null;
+      state.user.success = false;
+    },
+    [adminUserPut.fulfilled]: (state, action) => {
+      state.user.loading = false;
+      state.user.error = null;
+      state.user.success = true;
+    },
+    [adminUserPut.rejected]: (state, action) => {
+      state.user.loading = false;
+      state.user.error = action.payload;
+      state.user.success = false;
+    },
   },
 });
 
@@ -89,6 +129,7 @@ export const adminUserActions = {
   ...adminUserSlice.actions,
   adminUserGet,
   adminUserDelete,
+  adminUserPut,
 };
 
 export default adminUserSlice.reducer;
