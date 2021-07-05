@@ -1,11 +1,11 @@
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Row, Button, Col, Image, ListGroup, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { orderActions } from "../store/orderSlice";
+import { orderActions } from "../store";
 
 const PlaceorderPage = () => {
   const history = useHistory();
@@ -48,10 +48,10 @@ const PlaceorderPage = () => {
 
   useEffect(() => {
     if (success) {
-        dispatch(orderActions.createOrderReset())
+      dispatch(orderActions.createOrderReset());
       history.push(`/order/${order._id}`);
     }
-  }, [success, history, order]);
+  }, [dispatch, success, history, order]);
 
   return (
     <div>
@@ -99,7 +99,7 @@ const PlaceorderPage = () => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} X ${item.price} = $
+                          {item.qty} X &#8377;{item.price} = &#8377;
                           {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
@@ -119,25 +119,25 @@ const PlaceorderPage = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items: </Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>&#8377;{cart.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping: </Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>&#8377;{cart.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax: </Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>&#8377;{cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total: </Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>&#8377;{cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

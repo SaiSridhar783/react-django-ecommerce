@@ -12,6 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import ShippingPage from "./pages/ShippingPage";
 import PlaceorderPage from "./pages/PlaceorderPage";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   return (
@@ -47,6 +48,9 @@ function App() {
               </Route>
               <Route path="/placeorder">
                 <PlaceorderPage />
+              </Route>
+              <Route path="/order/:id">
+                <OrderPage />
               </Route>
             </Switch>
           </Container>

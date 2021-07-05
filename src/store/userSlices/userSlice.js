@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios-instance";
+import { getAllOrdersActions } from "../orderSlices/getAllOrdersSlice";
 
 const userLogin = createAsyncThunk("user/login", async (payload, thunkAPI) => {
   try {
@@ -31,6 +32,14 @@ const userRegister = createAsyncThunk(
   }
 );
 
+const userLogout = createAsyncThunk(
+  "user/logout",
+  async (payload, thunkAPI) => {
+    thunkAPI.dispatch(getAllOrdersActions.getAllOrdersReset());
+    thunkAPI.dispatch(userActions.userLogoutRed());
+  }
+);
+
 const initialUserInfo = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
@@ -39,7 +48,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: { userInfo: initialUserInfo },
   reducers: {
-    userLogout: (state, action) => {
+    userLogoutRed: (state, action) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
     },
@@ -78,6 +87,11 @@ const userSlice = createSlice({
   },
 });
 
-export const userActions = { ...userSlice.actions, userLogin, userRegister };
+export const userActions = {
+  ...userSlice.actions,
+  userLogin,
+  userRegister,
+  userLogout,
+};
 
 export default userSlice.reducer;

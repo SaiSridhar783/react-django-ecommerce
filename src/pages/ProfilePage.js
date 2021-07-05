@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import { useHistory } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { userDetailActions } from "../store";
+import { getAllOrdersActions, userDetailActions } from "../store";
 
 const ProfilePage = () => {
   const [name, setName] = useState("");
@@ -22,14 +23,17 @@ const ProfilePage = () => {
   const userLogin = useSelector((state) => state.user);
   const { userInfo } = userLogin;
 
+  const allOrders = useSelector((state) => state.allOrders);
+  const { loading: loadingOrders, error: errorOrders, orders } = allOrders;
+
   useEffect(() => {
     if (!userInfo) {
       //console.log(history)
       history.replace("/login");
     } else {
       if (!user || !user.name || success) {
-        //dispatch(userDetailActions.userReset());
         dispatch(userDetailActions.getUser("profile"));
+        dispatch(getAllOrdersActions.getAllOrders());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -105,6 +109,48 @@ const ProfilePage = () => {
 
       <Col md={9}>
         <h2>My Orders</h2>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message variant="danger">{errorOrders}</Message>
+        ) : (
+          <Table striped responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Delivered</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {orders.map((orderItem) => (
+                <tr key={orderItem._id}>
+                  <td>{orderItem._id}</td>
+                  <td>{orderItem.createdAt.slice(0, 10)}</td>
+                  <td>&#8377;{orderItem.totalPrice}</td>
+                  <td>
+                    {orderItem.isPaid ? (
+                      orderItem.paidAt.slice(0, 10)
+                    ) : (
+                      <i
+                        className="fas fa-times-circle"
+                        style={{ color: "red" }}
+                      ></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${orderItem._id}`}>
+                      <Button className="btn-sm">Details</Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   );
