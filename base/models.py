@@ -21,7 +21,7 @@ class Product(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return f"{self.name} ${self.price}"
+        return f"{self.name} ₹{self.price}"
 
 
 class Review(models.Model):
@@ -33,7 +33,7 @@ class Review(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return f"{self.name} ${self.rating}"
+        return f"{self.name} - {self.rating}"
 
 
 class Order(models.Model):
@@ -54,7 +54,7 @@ class Order(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return f"{self.createdAt} ${self.totalPrice}"
+        return f"{self.createdAt} ₹{self.totalPrice}"
 
 
 class OrderItem(models.Model):
@@ -68,7 +68,7 @@ class OrderItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return f"{self.name} - {self.qty} items for ${self.price}"
+        return f"{self.name} - {self.qty} items for ₹{self.price}"
 
 
 class ShippingAddress(models.Model):
@@ -83,4 +83,4 @@ class ShippingAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return f"{self.address} for ${self.price}"
+        return f"{self.address} for ₹{self.price}"
