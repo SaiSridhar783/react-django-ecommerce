@@ -45,14 +45,18 @@ const OrderPage = () => {
     if (!order || successPay || order._id !== +orderId) {
       dispatch(orderPayActions.orderPayReset());
       dispatch(eachOrderActions.getOrderById(orderId));
-    } else if (!order.isPaid) {
+    }
+  }, [dispatch, orderId, successPay]);
+
+  useEffect(() => {
+    if (!order.isPaid) {
       if (!window.paypal) {
         addPayPalScript();
       } else {
         setSdkReady(true);
       }
     }
-  }, [dispatch, orderId, successPay]);
+  }, []);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(orderPayActions.orderPay({ id: orderId, paymentResult }));

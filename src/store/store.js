@@ -8,7 +8,8 @@ import orderReducer from "./orderSlices/orderSlice";
 import eachOrderReducer, {
   orderPayReducer,
 } from "./orderSlices/eachOrderSlice";
-import getAllOrdersSlice from "./orderSlices/getAllOrdersSlice";
+import getAllOrdersReducer from "./orderSlices/getAllOrdersSlice";
+import adminUserReducer from "./adminSlices/adminUserSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,7 +21,8 @@ const store = configureStore({
     order: orderReducer,
     eachOrder: eachOrderReducer,
     orderPay: orderPayReducer,
-    allOrders: getAllOrdersSlice,
+    allOrders: getAllOrdersReducer,
+    adminUsersList: adminUserReducer,
   },
 });
 

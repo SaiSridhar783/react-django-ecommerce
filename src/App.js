@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ShippingPage from "./pages/ShippingPage";
 import PlaceorderPage from "./pages/PlaceorderPage";
 import OrderPage from "./pages/OrderPage";
+import UserListPage from "./pages/UserListPage";
 
 function App() {
   return (
@@ -51,6 +52,13 @@ function App() {
               </Route>
               <Route path="/order/:id">
                 <OrderPage />
+              </Route>
+              <Route path="/order/:id">
+                <OrderPage />
+              </Route>
+
+              <Route path="/admin/userlist">
+                <UserListPage />
               </Route>
             </Switch>
           </Container>

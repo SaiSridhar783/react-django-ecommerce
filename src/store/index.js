@@ -9,3 +9,4 @@ export { orderActions } from "./orderSlices/orderSlice";
 export { eachOrderActions } from "./orderSlices/eachOrderSlice";
 export { orderPayActions } from "./orderSlices/eachOrderSlice";
 export { getAllOrdersActions } from "./orderSlices/getAllOrdersSlice";
+export { adminUserActions } from "./adminSlices/adminUserSlice";

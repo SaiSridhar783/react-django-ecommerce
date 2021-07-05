@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios-instance";
+import { adminUserActions } from "../adminSlices/adminUserSlice";
 import { getAllOrdersActions } from "../orderSlices/getAllOrdersSlice";
 
 const userLogin = createAsyncThunk("user/login", async (payload, thunkAPI) => {
@@ -37,6 +38,7 @@ const userLogout = createAsyncThunk(
   async (payload, thunkAPI) => {
     thunkAPI.dispatch(getAllOrdersActions.getAllOrdersReset());
     thunkAPI.dispatch(userActions.userLogoutRed());
+    thunkAPI.dispatch(adminUserActions.adminUserGetReset());
   }
 );
 

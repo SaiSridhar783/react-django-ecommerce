@@ -121,7 +121,7 @@ const ProfilePage = () => {
                 <th>Date</th>
                 <th>Total</th>
                 <th>Paid</th>
-                <th>Delivered</th>
+                <th>View Order</th>
               </tr>
             </thead>
 
