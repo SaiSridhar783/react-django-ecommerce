@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { adminUserActions } from "../store";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
+import { adminUserActions } from "../../store";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
 import { Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useHistory } from "react-router";
@@ -19,7 +19,7 @@ const UserListPage = () => {
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) dispatch(adminUserActions.adminUserGet());
     else history.replace("/login");
-  }, [dispatch, history, successDelete]);
+  }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this user?"))
@@ -41,7 +41,7 @@ const UserListPage = () => {
               <th>NAME</th>
               <th>EMAIL</th>
               <th>ADMIN</th>
-              <th>3</th>
+              <th></th>
             </tr>
           </thead>
 

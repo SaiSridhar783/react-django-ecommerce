@@ -13,8 +13,9 @@ import RegisterPage from "./pages/RegisterPage";
 import ShippingPage from "./pages/ShippingPage";
 import PlaceorderPage from "./pages/PlaceorderPage";
 import OrderPage from "./pages/OrderPage";
-import UserListPage from "./pages/UserListPage";
-import UserEditPage from "./pages/UserEditPage";
+import UserListPage from "./pages/AdminPages/UserListPage";
+import UserEditPage from "./pages/AdminPages/UserEditPage";
+import ProductListPage from "./pages/AdminPages/ProductListPage";
 
 function App() {
   return (
@@ -63,6 +64,10 @@ function App() {
               </Route>
               <Route path="/admin/user/:id/edit">
                 <UserEditPage />
+              </Route>
+              
+              <Route path="/admin/productlist">
+                <ProductListPage />
               </Route>
             </Switch>
           </Container>

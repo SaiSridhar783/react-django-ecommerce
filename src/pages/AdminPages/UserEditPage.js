@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import FormContainer from "../containers/FormContainer";
-import { adminUserActions, userActions, userDetailActions } from "../store";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import FormContainer from "../../containers/FormContainer";
+import { adminUserActions, userDetailActions } from "../../store";
 
 const UserEditPage = () => {
   const [name, setName] = useState("");
