@@ -14,6 +14,7 @@ import ShippingPage from "./pages/ShippingPage";
 import PlaceorderPage from "./pages/PlaceorderPage";
 import OrderPage from "./pages/OrderPage";
 import UserListPage from "./pages/UserListPage";
+import UserEditPage from "./pages/UserEditPage";
 
 function App() {
   return (
@@ -59,6 +60,9 @@ function App() {
 
               <Route path="/admin/userlist">
                 <UserListPage />
+              </Route>
+              <Route path="/admin/user/:id/edit">
+                <UserEditPage />
               </Route>
             </Switch>
           </Container>

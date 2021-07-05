@@ -46,7 +46,7 @@ const UserListPage = () => {
           </thead>
 
           <tbody>
-            {users.map((user) => (
+            {users && users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
@@ -62,7 +62,7 @@ const UserListPage = () => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/admin/user/${user._id}`}>
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fa fa-edit"></i>
                     </Button>

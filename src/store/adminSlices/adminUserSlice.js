@@ -44,7 +44,7 @@ const adminUserDelete = createAsyncThunk(
 
 const adminUserSlice = createSlice({
   name: "adminUser",
-  initialState: { users: [] },
+  initialState: { users: [], success: false },
   reducers: {
     adminUserGetReset: (state, action) => {
       state = { users: [] };
@@ -74,7 +74,6 @@ const adminUserSlice = createSlice({
     },
     [adminUserDelete.fulfilled]: (state, action) => {
       state.loading = false;
-      state.users = action.payload;
       state.error = null;
       state.success = true;
     },

@@ -31,7 +31,7 @@ const ProfilePage = () => {
       //console.log(history)
       history.replace("/login");
     } else {
-      if (!user || !user.name || success) {
+      if (!user || !user.name || success || userInfo._id !== +user._id) {
         dispatch(userDetailActions.getUser("profile"));
         dispatch(getAllOrdersActions.getAllOrders());
       } else {
