@@ -7,6 +7,7 @@ from base.models import Product, Review
 from base.serializers import ProductSerializer
 
 from rest_framework import status
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 @api_view(["GET"])
@@ -18,11 +19,26 @@ def getProducts(request):
 
     products = Product.objects.filter(name__icontains=query)
 
+    page = request.query_params.get("page")
+    paginator = Paginator(products, 3)
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
+    if page == None:
+        page = 1
+
+    page = int(page)
+
     if len(products) == 0:
         return Response("No Products Found", status=status.HTTP_404_NOT_FOUND)
 
     serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+    return Response({"products": serializer.data, "page": page, "pages": paginator.num_pages})
 
 
 @api_view(["GET"])
