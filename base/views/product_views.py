@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Product
@@ -26,8 +26,9 @@ def getProduct(request, pk):
 
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
-def createProduct(request, pk):
+def createProduct(request):
     user = request.user
+    print(user)
     product = Product.objects.create(
         user=user,
         name="Sample Name",
@@ -39,7 +40,25 @@ def createProduct(request, pk):
     )
 
     serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)
 
+
+@api_view(["PUT"])
+@permission_classes([IsAdminUser])
+def updateProduct(request, pk):
+    data = request.data
+    product = Product.objects.get(_id=pk)
+
+    product.name = data["name"]
+    product.price = data["price"]
+    product.brand = data["brand"]
+    product.category = data["category"]
+    product.countInStock = data["countInStock"]
+    product.description = data["description"]
+
+    product.save()
+
+    serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
 
 
