@@ -21,12 +21,36 @@ const ProductListPage = () => {
     success: successDelete,
   } = productDelete;
 
+  const productCreate = useSelector((state) => state.adminProductsList.create);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: createdProduct,
+  } = productCreate;
+
   const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) dispatch(productActions.fetchProducts());
-    else history.replace("/login");
-  }, [dispatch, history, userInfo, successDelete]);
+    dispatch(adminProductActions.adminProductReset());
+
+    if (!userInfo.isAdmin) {
+      history.replace("/login");
+    }
+
+    if (successCreate) {
+      history.push(`/admin/product/${createdProduct._id}/edit`);
+    } else {
+      dispatch(productActions.fetchProducts());
+    }
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    successDelete,
+    successCreate,
+    createdProduct,
+  ]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
@@ -34,15 +58,17 @@ const ProductListPage = () => {
     }
   };
 
-  const createProductHandler = (product) => {};
+  const createProductHandler = () => {
+    dispatch(adminProductActions.createProduct());
+  };
 
   return (
     <div>
-      <Row className="align-items-center">
+      <Row className="align-items-center text-start">
         <Col>
           <h1>Products</h1>
         </Col>
-        <Col className="text-right">
+        <Col className="text-end">
           <Button className="my-3" onClick={createProductHandler}>
             <i className="fas fa-plus"></i> &nbsp; Create Product
           </Button>
@@ -51,6 +77,9 @@ const ProductListPage = () => {
 
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
 
       {loading ? (
         <Loader />

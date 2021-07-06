@@ -16,10 +16,10 @@ const fetchProducts = createAsyncThunk(
 );
 
 const fetchSingleProduct = createAsyncThunk(
-  "product/fetchProduct",
+  "product/fetchSingleProduct",
   async (payload, thunkAPI) => {
     try {
-      const response = await axiosInstance.get("/api/products/" + payload);
+      const response = await axiosInstance.get(`/api/products/${payload}/`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
@@ -31,7 +31,7 @@ const fetchSingleProduct = createAsyncThunk(
 
 const productSlice = createSlice({
   name: "product",
-  initialState: { products: [], error: null, loading: true },
+  initialState: { products: [], error: null, loading: true, product: {} },
   reducers: {},
   extraReducers: {
     [fetchProducts.fulfilled]: (state, action) => {
@@ -46,6 +46,7 @@ const productSlice = createSlice({
     [fetchSingleProduct.pending]: (state) => {
       state.loading = true;
       state.error = null;
+      state.product = {};
     },
     [fetchSingleProduct.fulfilled]: (state, action) => {
       state.product = action.payload;
