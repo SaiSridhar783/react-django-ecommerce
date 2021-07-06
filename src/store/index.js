@@ -5,6 +5,7 @@ export { cartActions } from "./cartSlice";
 export { userActions } from "./userSlices/userSlice";
 export { userDetailActions } from "./userSlices/userDetailSlice";
 export { checkoutActions } from "./checkoutSlice";
+export { reviewActions } from "./reviewSlice";
 export { orderActions } from "./orderSlices/orderSlice";
 export { eachOrderActions } from "./orderSlices/eachOrderSlice";
 export { orderPayActions } from "./orderSlices/eachOrderSlice";
