@@ -1,11 +1,11 @@
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { useEffect, useState } from "react";
-import { Row, Col, Image, ListGroup, Card } from "react-bootstrap";
+import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { eachOrderActions, orderPayActions } from "../store";
+import { adminOrderActions, eachOrderActions, orderPayActions } from "../store";
 
 import { PayPalButton } from "react-paypal-button-v2";
 
@@ -23,6 +23,11 @@ const OrderPage = () => {
 
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+
+  const orderDeliver = useSelector((state) => state.adminOrdersList.deliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+  const { userInfo } = useSelector((state) => state.user);
 
   if (!loading && !error) {
     order.itemsPrice = order.orderItems
@@ -42,11 +47,12 @@ const OrderPage = () => {
   };
 
   useEffect(() => {
-    if (!order || successPay || order._id !== +orderId) {
+    if (!order || successPay || order._id !== +orderId || successDeliver) {
       dispatch(orderPayActions.orderPayReset());
+      dispatch(adminOrderActions.adminOrderReset());
       dispatch(eachOrderActions.getOrderById(orderId));
-    }
-  }, [dispatch, orderId, successPay]);
+    } //eslint-disable-next-line
+  }, [dispatch, orderId, successPay, successDeliver]);
 
   useEffect(() => {
     if (!order.isPaid) {
@@ -60,6 +66,10 @@ const OrderPage = () => {
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(orderPayActions.orderPay({ id: orderId, paymentResult }));
+  };
+
+  const deliverHandler = () => {
+    dispatch(adminOrderActions.deliverOrder(order));
   };
 
   return loading ? (
@@ -92,7 +102,7 @@ const OrderPage = () => {
               </p>
               {order.isDelivered ? (
                 <Message variant="success">
-                  Delivered On: {order.deliveredAt}
+                  Delivered On: {order.deliveredAt.slice(0,10)} at {order.deliveredAt.slice(12,19)}
                 </Message>
               ) : (
                 <Message variant="warning">Not Delivered</Message>
@@ -193,6 +203,23 @@ const OrderPage = () => {
                 </ListGroup.Item>
               )}
             </ListGroup>
+
+            {loadingDeliver && <Loader />}
+
+            {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="w-100 btn btn-block"
+                    onClick={deliverHandler}
+                  >
+                    Mark As Delivered
+                  </Button>
+                </ListGroup.Item>
+              )}
           </Card>
         </Col>
       </Row>

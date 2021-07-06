@@ -11,3 +11,4 @@ export { orderPayActions } from "./orderSlices/eachOrderSlice";
 export { getAllOrdersActions } from "./orderSlices/getAllOrdersSlice";
 export { adminUserActions } from "./adminSlices/adminUserSlice";
 export { adminProductActions } from "./adminSlices/adminProductSlice";
+export { adminOrderActions } from "./adminSlices/adminOrderSlice";

@@ -60,7 +60,7 @@ const updateProduct = createAsyncThunk(
         product,
         config
       );
-        console.log(response.data, product, "Slice")
+
       //thunkAPI.dispatch()
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {

@@ -11,6 +11,7 @@ import eachOrderReducer, {
 import getAllOrdersReducer from "./orderSlices/getAllOrdersSlice";
 import adminUserReducer from "./adminSlices/adminUserSlice";
 import adminProductReducer from "./adminSlices/adminProductSlice";
+import adminOrderReducer from "./adminSlices/adminOrderSlice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     allOrders: getAllOrdersReducer,
     adminUsersList: adminUserReducer,
     adminProductsList: adminProductReducer,
+    adminOrdersList: adminOrderReducer,
   },
 });
 
