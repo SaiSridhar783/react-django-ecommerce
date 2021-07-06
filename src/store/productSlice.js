@@ -3,13 +3,15 @@ import axiosInstance from "../utils/axios-instance";
 
 const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async (payload, thunkAPI) => {
+  async (keyword = "", thunkAPI) => {
     try {
-      const response = await axiosInstance.get("/api/products/");
+      const response = await axiosInstance.get(
+        "/api/products/?search=" + keyword
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err?.response?.data.detail || err?.response?.data || err.message
       );
     }
   }

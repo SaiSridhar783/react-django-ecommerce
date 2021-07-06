@@ -6,14 +6,18 @@ import Message from "../components/Message";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { productActions } from "../store";
+import { useLocation } from "react-router";
 
 const HomePage = () => {
   const { products, error } = useSelector((state) => state.product);
   const dispatch = useDispatch();
+  const query = new URLSearchParams(useLocation().search);
+
+  let keyword = query.get("search") || "";
 
   useEffect(() => {
-    dispatch(productActions.fetchProducts());
-  }, [dispatch]);
+    dispatch(productActions.fetchProducts(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <div>
