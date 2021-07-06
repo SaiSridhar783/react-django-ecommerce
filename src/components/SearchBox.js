@@ -7,9 +7,9 @@ const SearchBox = () => {
   const history = useHistory();
 
   const submitHandler = (e) => {
-    e.prevenDefault();
+    e.preventDefault();
     if (keyword) {
-      history.push("/?keyword=" + keyword);
+      history.push(`/?search=${keyword}&page=1`);
     } else {
       history.push(history.location.pathname);
     }

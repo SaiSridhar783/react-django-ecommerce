@@ -3,10 +3,10 @@ import axiosInstance from "../utils/axios-instance";
 
 const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async (keyword = "", thunkAPI) => {
+  async ({ keyword, pageNo }, thunkAPI) => {
     try {
       const response = await axiosInstance.get(
-        "/api/products/?search=" + keyword
+        `/api/products/?search=${keyword}&page=${pageNo}`
       );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
@@ -37,7 +37,9 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchProducts.fulfilled]: (state, action) => {
-      state.products = action.payload;
+      state.products = action.payload.products;
+      state.page = action.payload.page;
+      state.pages = action.payload.pages;
       state.error = null;
       state.loading = false;
     },

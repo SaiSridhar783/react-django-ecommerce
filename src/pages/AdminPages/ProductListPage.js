@@ -4,15 +4,19 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { adminProductActions, productActions } from "../../store";
+import Paginate from "../../components/Paginate";
 
 const ProductListPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const query = new URLSearchParams(useLocation().search);
+  const keyword = query.get("search") || "";
+  const pageNo = +query.get("page") || 1;
 
   const productList = useSelector((state) => state.product);
-  const { loading, error, products } = productList;
+  const { loading, error, products, pages, page } = productList;
 
   const productDelete = useSelector((state) => state.adminProductsList);
   const {
@@ -41,7 +45,12 @@ const ProductListPage = () => {
     if (successCreate) {
       history.push(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(productActions.fetchProducts());
+      dispatch(
+        productActions.fetchProducts({
+          keyword,
+          pageNo,
+        })
+      );
     }
   }, [
     dispatch,
@@ -50,6 +59,8 @@ const ProductListPage = () => {
     successDelete,
     successCreate,
     createdProduct,
+    pageNo,
+    keyword,
   ]);
 
   const deleteHandler = (id) => {
@@ -86,47 +97,51 @@ const ProductListPage = () => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped responsive hover bordered className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
-              <th></th>
-            </tr>
-          </thead>
+        <div>
+          <Table striped responsive hover bordered className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
+                <th></th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {products &&
-              products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>&#8377;{product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
+            <tbody>
+              {products &&
+                products.map((product) => (
+                  <tr key={product._id}>
+                    <td>{product._id}</td>
+                    <td>{product.name}</td>
+                    <td>&#8377;{product.price}</td>
+                    <td>{product.category}</td>
+                    <td>{product.brand}</td>
 
-                  <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fa fa-edit"></i>
+                    <td>
+                      <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                        <Button variant="light" className="btn-sm">
+                          <i className="fa fa-edit"></i>
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant="light"
+                        className="btn-sm bg-danger btn-delete-hover"
+                        onClick={() => deleteHandler(product._id)}
+                        style={{ color: "whitesmoke" }}
+                      >
+                        <i className="fa fa-trash-alt"></i>
                       </Button>
-                    </LinkContainer>
-                    <Button
-                      variant="light"
-                      className="btn-sm bg-danger btn-delete-hover"
-                      onClick={() => deleteHandler(product._id)}
-                      style={{ color: "whitesmoke" }}
-                    >
-                      <i className="fa fa-trash-alt"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+
+          <Paginate page={page} pages={pages} isAdmin={true} />
+        </div>
       )}
     </div>
   );
