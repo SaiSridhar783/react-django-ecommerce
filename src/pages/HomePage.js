@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { productActions } from "../store";
 import { useLocation } from "react-router";
 import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
 
 const HomePage = () => {
   const { products, error, page, pages } = useSelector(
@@ -25,6 +26,8 @@ const HomePage = () => {
 
   return (
     <div>
+      {!keyword && <ProductCarousel />}
+
       <h1>Latest Products</h1>
       <Container>
         {error ? (

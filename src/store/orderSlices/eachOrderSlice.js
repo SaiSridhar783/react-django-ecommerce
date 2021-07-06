@@ -13,7 +13,7 @@ const getOrderById = createAsyncThunk("order/create", async (id, thunkAPI) => {
     thunkAPI.dispatch(cartActions.cartReset());
     return thunkAPI.fulfillWithValue(response.data);
   } catch (err) {
-    return thunkAPI.rejectWithValue(err?.response?.data.detail || err.message);
+    return thunkAPI.rejectWithValue(err.response.data.detail || err.response.data || err.message);
   }
 });
 
@@ -62,7 +62,7 @@ const orderPay = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }

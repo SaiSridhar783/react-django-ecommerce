@@ -8,7 +8,9 @@ const addToCart = createAsyncThunk(
       const response = await axiosInstance.get("/api/products/" + payload.id);
       return thunkAPI.fulfillWithValue({ ...response.data, qty: payload.qty });
     } catch (err) {
-      return thunkAPI.rejectWithValue(err?.response.data.detail || err.message);
+      return thunkAPI.rejectWithValue(
+        err.response.data.detail || err.response.data || err.message
+      );
     }
   }
 );

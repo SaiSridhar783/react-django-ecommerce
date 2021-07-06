@@ -17,7 +17,7 @@ const deleteProduct = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }
@@ -40,7 +40,7 @@ const createProduct = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }
@@ -65,7 +65,7 @@ const updateProduct = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }

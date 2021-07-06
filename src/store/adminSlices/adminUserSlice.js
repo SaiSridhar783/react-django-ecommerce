@@ -15,7 +15,7 @@ const adminUserGet = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response.data.details || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }
@@ -37,7 +37,7 @@ const adminUserDelete = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response.data.details || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }
@@ -61,7 +61,7 @@ const adminUserPut = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response.data.details || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }

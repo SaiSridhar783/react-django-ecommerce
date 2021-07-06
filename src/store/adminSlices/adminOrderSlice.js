@@ -14,7 +14,7 @@ const getOrders = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }
@@ -37,7 +37,7 @@ const deliverOrder = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err?.response?.data.detail || err.message
+        err.response.data.detail || err.response.data || err.message
       );
     }
   }
